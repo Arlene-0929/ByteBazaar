@@ -55,34 +55,32 @@ class CheckoutManager {
         if (provinceSelect) {
             provinceSelect.addEventListener('change', (e) => {
                 this.clearFieldError(provinceSelect);
-                this.populateMunicipalityOptions(provinceSelect.value);
+                // Municipality and barangay are now free-text inputs; clear them when province changes
+                const municipalityInput = document.getElementById('checkout-municipality');
+                const barangayInput = document.getElementById('checkout-barangay');
+                const postalInput = document.getElementById('checkout-postal');
+                if (municipalityInput) municipalityInput.value = '';
+                if (barangayInput) barangayInput.value = '';
+                if (postalInput) postalInput.value = '';
                 this.validateField(provinceSelect);
             });
         }
-
         if (municipalitySelect) {
-            municipalitySelect.addEventListener('change', (e) => {
+            // municipality is a text input now — validate on blur/input
+            municipalitySelect.addEventListener('blur', () => {
                 this.clearFieldError(municipalitySelect);
-                this.populateBarangayOptions(provinceSelect.value, municipalitySelect.value);
                 this.validateField(municipalitySelect);
             });
+            municipalitySelect.addEventListener('input', () => this.clearFieldError(municipalitySelect));
         }
 
         if (barangaySelect) {
-            barangaySelect.addEventListener('change', (e) => {
+            // barangay is a text input now — validate on blur/input
+            barangaySelect.addEventListener('blur', () => {
                 this.clearFieldError(barangaySelect);
-                // Auto-fill postal code from selected barangay option (if available)
-                const selected = barangaySelect.options[barangaySelect.selectedIndex];
-                if (selected && selected.dataset) {
-                    const postal = selected.dataset.postal || '';
-                    const postalInput = document.getElementById('checkout-postal');
-                    if (postalInput && postal) postalInput.value = postal;
-                }
                 this.validateField(barangaySelect);
-                // also validate postal after auto-fill
-                const postalInput = document.getElementById('checkout-postal');
-                if (postalInput) this.validateField(postalInput);
             });
+            barangaySelect.addEventListener('input', () => this.clearFieldError(barangaySelect));
         }
     }
 
@@ -165,19 +163,7 @@ class CheckoutManager {
                     error = 'Barangay is required';
                     break;
                 }
-                // ensure barangay exists for selected province+municipality
-                if (this.locationsData) {
-                    const province = document.getElementById('checkout-province').value;
-                    const municipality = document.getElementById('checkout-municipality').value;
-                    if (!province || !municipality) {
-                        error = 'Select province and municipality first';
-                    } else {
-                        const barangays = (this.locationsData[province] && Array.isArray(this.locationsData[province][municipality])) ? this.locationsData[province][municipality].map(b => b.name) : [];
-                        if (!barangays.includes(value)) {
-                            error = 'Please select a valid barangay from the list';
-                        }
-                    }
-                }
+                // no dropdown: accept free-text barangay (optional: could validate against dataset if desired)
                 break;
 
             case 'checkout-city':
@@ -190,14 +176,6 @@ class CheckoutManager {
             case 'checkout-municipality':
                 if (!value) {
                     error = 'Municipality is required';
-                    break;
-                }
-                if (this.locationsData) {
-                    const province = document.getElementById('checkout-province').value;
-                    const municipalities = (province && this.locationsData[province] && Array.isArray(this.locationsData[province].municipalities)) ? this.locationsData[province].municipalities : [];
-                    if (!municipalities.includes(value)) {
-                        error = 'Please select a valid municipality from the list';
-                    }
                 }
                 break;
 
