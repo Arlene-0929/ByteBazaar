@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test E-commerce Functionality</title>
+    <link rel="stylesheet" href="globals.css">
+    <link rel="stylesheet" href="components.css">
+    <style>
+        .test-section {
+            margin: 2rem;
+            padding: 2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .test-button {
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: hsl(10, 60%, 40%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .test-button:hover {
+            background: hsl(10, 60%, 33%);
+        }
+
+        .test-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        .success {
+            color: #065f46;
+            background: #d1fae5;
+        }
+
+        .error {
+            color: #991b1b;
+            background: #fee2e2;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="container mx-auto px-8 py-16">
+        <h1 class="text-4xl font-heading font-bold text-charcoal mb-8">E-commerce Functionality Tests</h1>
+
+        <!-- Test 1: LocalStorage -->
+        <div class="test-section">
+            <h2 class="text-2xl font-heading font-bold mb-4">1. LocalStorage Test</h2>
+            <button class="test-button" onclick="testLocalStorage()">Test LocalStorage</button>
+            <div id="localStorage-result" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 2: Product Variants -->
+        <div class="test-section">
+            <h2 class="text-2xl font-heading font-bold mb-4">2. Product Variants Test</h2>
+            <button class="test-button" onclick="testProductVariants()">Test Product Variants</button>
+            <div id="variants-result" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 3: Add to Cart -->
+        <div class="test-section">
+            <h2 class="text-2xl font-heading font-bold mb-4">3. Add to Cart Test</h2>
+            <button class="test-button" onclick="testAddToCart()">Add Test Product to Cart</button>
+            <button class="test-button" onclick="viewCart()">View Cart</button>
+            <button class="test-button" onclick="clearCart()">Clear Cart</button>
+            <div id="cart-result" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 4: Favorites -->
+        <div class="test-section">
+            <h2 class="text-2xl font-heading font-bold mb-4">4. Favorites Test</h2>
+            <button class="test-button" onclick="testAddFavorite()">Add to Favorites</button>
+            <button class="test-button" onclick="viewFavorites()">View Favorites</button>
+            <button class="test-button" onclick="clearFavorites()">Clear Favorites</button>
+            <div id="favorites-result" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 5: Orders -->
+        <div class="test-section">
+            <h2 class="text-2xl font-heading font-bold mb-4">5. Orders Test</h2>
+            <button class="test-button" onclick="testCreateOrder()">Create Test Order</button>
+            <button class="test-button" onclick="viewOrders()">View Orders</button>
+            <button class="test-button" onclick="testCancelOrder()">Cancel Last Order</button>
+            <button class="test-button" onclick="clearOrders()">Clear Orders</button>
+            <div id="orders-result" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 6: Modal -->
+        <div class="test-section">
+            <h2 class="text-2xl font-heading font-bold mb-4">6. Variant Modal Test</h2>
+            <button class="test-button" onclick="testOpenModal()">Open Variant Modal</button>
+            <div id="modal-result" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="test-section">
+            <h2 class="text-2xl font-heading font-bold mb-4">Navigation</h2>
+            <a href="index.html" class="test-button" style="display: inline-block; text-decoration: none;">Go to Main
+                Store</a>
+            <a href="favorites.html" class="test-button" style="display: inline-block; text-decoration: none;">Go to
+                Favorites</a>
+            <a href="orders.html" class="test-button" style="display: inline-block; text-decoration: none;">Go to
+                Orders</a>
+        </div>
+    </div>
+
+    <script src="data-structures.js"></script>
+    <script src="variant-modal.js"></script>
+    <script>
+        function showResult(elementId, message, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `test-result ${isSuccess ? 'success' : 'error'}`;
+            element.textContent = message;
+        }
+
+        function testLocalStorage() {
+            try {
+                localStorage.setItem('test', 'value');
+                const value = localStorage.getItem('test');
+                localStorage.removeItem('test');
+
+                if (value === 'value') {
+                    showResult('localStorage-result', '✓ LocalStorage is working correctly!');
+                } else {
+                    showResult('localStorage-result', '✗ LocalStorage test failed', false);
+                }
+            } catch (e) {
+                showResult('localStorage-result', `✗ LocalStorage error: ${e.message}`, false);
+            }
+        }
+
+        function testProductVariants() {
+            try {
+                const variants = ProductVariants['Iphone 14 pro max'];
+                const result = `✓ Product Variants loaded successfully!\n\nIphone 14 pro max:\n- Colors: ${variants.colors.length}\n- Sizes: ${variants.sizes.length}\n\nAll Products: ${Object.keys(ProductVariants).length}`;
+                showResult('variants-result', result);
+            } catch (e) {
+                showResult('variants-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function testAddToCart() {
+            try {
+                const testProduct = {
+                    id: 'test-product-1',
+                    name: 'Test Smartphone',
+                    price: '599.99',
+                    image: 'https://via.placeholder.com/300',
+                    color: 'Black',
+                    size: '128GB'
+                };
+
+                StorageManager.addToCart(testProduct);
+                const cart = StorageManager.getCart();
+                showResult('cart-result', `✓ Product added to cart!\n\nCart items: ${cart.length}\nLast item: ${cart[cart.length - 1].name}`);
+            } catch (e) {
+                showResult('cart-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function viewCart() {
+            try {
+                const cart = StorageManager.getCart();
+                const result = `Cart Contents (${cart.length} items):\n\n${JSON.stringify(cart, null, 2)}`;
+                showResult('cart-result', result);
+            } catch (e) {
+                showResult('cart-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function clearCart() {
+            try {
+                StorageManager.clearCart();
+                showResult('cart-result', '✓ Cart cleared successfully!');
+            } catch (e) {
+                showResult('cart-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function testAddFavorite() {
+            try {
+                const testProduct = {
+                    id: 'fav-product-1',
+                    name: 'Favorite Gadget',
+                    price: '299.99',
+                    image: 'https://via.placeholder.com/300'
+                };
+
+                StorageManager.toggleFavorite(testProduct);
+                const favorites = StorageManager.getFavorites();
+                showResult('favorites-result', `✓ Product added to favorites!\n\nFavorites: ${favorites.length}`);
+            } catch (e) {
+                showResult('favorites-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function viewFavorites() {
+            try {
+                const favorites = StorageManager.getFavorites();
+                const result = `Favorites (${favorites.length} items):\n\n${JSON.stringify(favorites, null, 2)}`;
+                showResult('favorites-result', result);
+            } catch (e) {
+                showResult('favorites-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function clearFavorites() {
+            try {
+                localStorage.removeItem('techub_favorites');
+                showResult('favorites-result', '✓ Favorites cleared successfully!');
+            } catch (e) {
+                showResult('favorites-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function testCreateOrder() {
+            try {
+                const testItems = [
+                    {
+                        id: 'order-item-1',
+                        name: 'Test Product 1',
+                        price: '199.99',
+                        image: 'https://via.placeholder.com/300',
+                        color: 'Black',
+                        size: '128GB',
+                        quantity: 2
+                    },
+                    {
+                        id: 'order-item-2',
+                        name: 'Test Product 2',
+                        price: '299.99',
+                        image: 'https://via.placeholder.com/300',
+                        color: 'White',
+                        quantity: 1
+                    }
+                ];
+
+                const total = 699.97;
+                const order = StorageManager.createOrder(testItems, total);
+                showResult('orders-result', `✓ Order created successfully!\n\nOrder ID: ${order.id}\nStatus: ${order.status}\nTotal: $${order.total}`);
+            } catch (e) {
+                showResult('orders-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function viewOrders() {
+            try {
+                const orders = StorageManager.getOrders();
+                const result = `Orders (${orders.length} total):\n\n${JSON.stringify(orders, null, 2)}`;
+                showResult('orders-result', result);
+            } catch (e) {
+                showResult('orders-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function testCancelOrder() {
+            try {
+                const orders = StorageManager.getOrders();
+                if (orders.length === 0) {
+                    showResult('orders-result', '✗ No orders to cancel. Create an order first.', false);
+                    return;
+                }
+
+                const lastOrder = orders[0];
+                const result = StorageManager.cancelOrder(lastOrder.id);
+
+                if (result) {
+                    showResult('orders-result', `✓ Order cancelled successfully!\n\nOrder ID: ${lastOrder.id}\nNew Status: cancelled`);
+                } else {
+                    showResult('orders-result', `✗ Cannot cancel order. Status: ${lastOrder.status}`, false);
+                }
+            } catch (e) {
+                showResult('orders-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function clearOrders() {
+            try {
+                localStorage.removeItem('techub_orders');
+                showResult('orders-result', '✓ Orders cleared successfully!');
+            } catch (e) {
+                showResult('orders-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        function testOpenModal() {
+            try {
+                if (!window.variantModal) {
+                    showResult('modal-result', '✗ Variant modal not initialized yet. Wait a moment and try again.', false);
+                    return;
+                }
+
+                const testProduct = {
+                    id: 'modal-test-1',
+                    name: 'Iphone 14 pro max',
+                    price: '57,000',
+                    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=800&fit=crop'
+                };
+
+                window.variantModal.open(testProduct);
+                showResult('modal-result', '✓ Modal opened! Check if the variant selection modal appeared.');
+            } catch (e) {
+                showResult('modal-result', `✗ Error: ${e.message}`, false);
+            }
+        }
+
+        // Auto-run localStorage test on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testLocalStorage();
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

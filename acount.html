@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" type="image/png" href="BB logo.png">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - ByteBazaar</title>
+    <link rel="stylesheet" href="globals.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="checkout.css">
+    <style>
+        .account-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .account-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .account-sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .account-main {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-profile {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, hsl(10, 60%, 40%) 0%, hsl(10, 60%, 35%) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .user-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: hsl(210, 10%, 15%);
+            margin-bottom: 0.25rem;
+        }
+
+        .user-email {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .account-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .account-nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: hsl(210, 10%, 15%);
+            text-decoration: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        .account-nav-item:hover {
+            background: #f3f4f6;
+            color: hsl(10, 60%, 40%);
+        }
+
+        .account-nav-item.active {
+            background: hsl(10, 60%, 98%);
+            color: hsl(10, 60%, 40%);
+            font-weight: 600;
+        }
+
+        .account-nav-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .addresses-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .address-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .address-card:hover {
+            border-color: hsl(10, 60%, 40%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .address-card.default {
+            border-color: hsl(10, 60%, 40%);
+            background: hsl(10, 60%, 98%);
+        }
+
+        .default-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: hsl(10, 60%, 40%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .address-name {
+            font-weight: 700;
+            color: hsl(210, 10%, 15%);
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+        }
+
+        .address-details {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .address-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-edit {
+            background: white;
+            border: 2px solid hsl(10, 60%, 40%);
+            color: hsl(10, 60%, 40%);
+        }
+
+        .btn-edit:hover {
+            background: hsl(10, 60%, 98%);
+        }
+
+        .btn-delete {
+            background: white;
+            border: 2px solid #dc2626;
+            color: #dc2626;
+        }
+
+        .btn-delete:hover {
+            background: #fee2e2;
+        }
+
+        .btn-set-default {
+            background: hsl(10, 60%, 40%);
+            color: white;
+        }
+
+        .btn-set-default:hover {
+            background: hsl(10, 60%, 33%);
+        }
+
+        @media (max-width: 1024px) {
+            .account-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-neutral/95 backdrop-blur-sm border-b border-gray-200">
+        <nav class="container mx-auto px-8 lg:px-16">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <a href="index.html"
+                    class="text-2xl font-heading font-bold text-navbar-text hover:text-primary transition-colors duration-200">
+                    ByteBazaar
+                </a>
+                <div class="flex items-center space-x-6">
+                    <a href="index.html"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200">Home</a>
+
+                    <!-- User Icon & Dropdown -->
+                    <div id="user-dropdown-container" class="hidden account-btn-container">
+                        <button id="user-icon-btn" aria-label="User menu"
+                            class="text-navbar-text hover:text-primary transition-colors duration-200 p-2">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </button>
+                        <div id="user-dropdown-menu"></div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="account-container">
+        <h1 class="text-4xl font-heading font-bold text-charcoal mb-2">My Account</h1>
+        <p class="text-gray-600 mb-8">Manage your account settings and addresses</p>
+
+        <div class="account-grid">
+            <!-- Sidebar -->
+            <div class="account-sidebar">
+                <div class="user-profile">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div class="user-name" id="user-name">User Name</div>
+                    <div class="user-email" id="user-email">user@email.com</div>
+                </div>
+
+                <nav class="account-nav">
+                    <a href="account.html" class="account-nav-item active">
+                        <svg class="account-nav-icon" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                        Addresses
+                    </a>
+                    <a href="orders.html" class="account-nav-item">
+                        <svg class="account-nav-icon" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                        My Orders
+                    </a>
+                    <a href="favorites.html" class="account-nav-item">
+                        <svg class="account-nav-icon" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                            </path>
+                        </svg>
+                        Favorites
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            <div class="account-main">
+                <h2 class="section-title">
+                    <svg class="section-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                        </path>
+                        <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Saved Addresses
+                </h2>
+
+                <div class="addresses-list" id="addresses-list">
+                    <!-- Addresses will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <link rel="stylesheet" href="auth.css">
+    <script src="data-structures.js"></script>
+    <script src="auth.js"></script>
+    <script src="auth-modal.js"></script>
+    <script src="account-panel.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check authentication
+            setTimeout(() => {
+                if (!window.authManager || !window.authManager.isLoggedIn()) {
+                    alert('Please login to view account');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                const user = window.authManager.getCurrentUser();
+                if (user) {
+                    // Update user profile
+                    const initials = user.fullName.split(' ').map(n => n[0]).join('').toUpperCase();
+                    document.getElementById('user-avatar').textContent = initials;
+                    document.getElementById('user-name').textContent = user.fullName;
+                    document.getElementById('user-email').textContent = user.email;
+
+                    // Display addresses
+                    displayAddresses();
+                }
+            }, 200);
+
+            function displayAddresses() {
+                const addressesList = document.getElementById('addresses-list');
+                const addresses = user.addresses || [];
+
+                if (addresses.length === 0) {
+                    addressesList.innerHTML = `
+            <div class="empty-state">
+              <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <h3 class="empty-state-title">No Saved Addresses</h3>
+              <p class="empty-state-description">Add an address during checkout to save it here</p>
+              <a href="index.html#products" class="empty-state-action">Start Shopping</a>
+            </div>
+          `;
+                    return;
+                }
+
+                addressesList.innerHTML = addresses.map(address => {
+                    const isDefault = address.id === user.defaultAddressId;
+
+                    return `
+            <div class="address-card ${isDefault ? 'default' : ''}">
+              ${isDefault ? '<span class="default-badge">Default</span>' : ''}
+              
+              <div class="address-name">${address.name}</div>
+              <div class="address-details">
+                ${address.mobile}<br>
+                ${address.street}<br>
+                ${address.barangay}, ${address.city}<br>
+                ${address.province} ${address.postalCode}
+              </div>
+              
+              <div class="address-actions">
+                ${!isDefault ? `<button class="btn-small btn-set-default" onclick="setDefaultAddress('${address.id}')">Set as Default</button>` : ''}
+                <button class="btn-small btn-delete" onclick="deleteAddress('${address.id}')">Delete</button>
+              </div>
+            </div>
+          `;
+                }).join('');
+            }
+
+            window.setDefaultAddress = function (addressId) {
+                if (window.authManager) {
+                    window.authManager.updateUser({ defaultAddressId: addressId });
+                    location.reload();
+                }
+            };
+
+            window.deleteAddress = function (addressId) {
+                if (confirm('Are you sure you want to delete this address?')) {
+                    const user = window.authManager.getCurrentUser();
+                    const addresses = user.addresses.filter(addr => addr.id !== addressId);
+
+                    let defaultAddressId = user.defaultAddressId;
+                    if (defaultAddressId === addressId) {
+                        defaultAddressId = addresses.length > 0 ? addresses[0].id : null;
+                    }
+
+                    window.authManager.updateUser({ addresses, defaultAddressId });
+                    location.reload();
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>

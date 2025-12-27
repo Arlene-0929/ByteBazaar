@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - ByteBazaar</title>
+    <link rel="stylesheet" href="globals.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="auth.css">
+    <style>
+        .confirmation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirmation-card {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        .confirmation-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: hsl(210, 10%, 15%);
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-message {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            font-size: 1.125rem;
+        }
+
+        .order-info {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .order-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .order-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .order-info-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .order-info-value {
+            color: hsl(210, 10%, 15%);
+            font-weight: 600;
+        }
+
+        .order-id {
+            color: hsl(10, 60%, 40%);
+            font-size: 1.25rem;
+        }
+
+        .confirmation-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 1rem 2rem;
+            background: hsl(10, 60%, 40%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: hsl(10, 60%, 33%);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            padding: 1rem 2rem;
+            background: white;
+            color: hsl(10, 60%, 40%);
+            border: 2px solid hsl(10, 60%, 40%);
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: hsl(10, 60%, 98%);
+        }
+
+        @media (max-width: 640px) {
+            .confirmation-container {
+                padding: 1rem;
+            }
+
+            .confirmation-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .confirmation-title {
+                font-size: 1.5rem;
+            }
+
+            .confirmation-actions {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-outline {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-neutral/95 backdrop-blur-sm border-b border-gray-200">
+        <nav class="container mx-auto px-8 lg:px-16">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <a href="index.html"
+                    class="text-2xl font-heading font-bold text-navbar-text hover:text-primary transition-colors duration-200">
+                    ByteBazaar
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="confirmation-container">
+        <div class="confirmation-card">
+            <div class="success-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+
+            <h1 class="confirmation-title">Order Placed Successfully!</h1>
+            <p class="confirmation-message">Thank you for your purchase. Your order has been received and is being
+                processed.</p>
+
+            <div class="order-info" id="order-info">
+                <!-- Order details will be populated by JavaScript -->
+            </div>
+
+            <div class="confirmation-actions">
+                <a href="orders.html" class="btn-primary">View Order Details</a>
+                <a href="index.html" class="btn-outline">Continue Shopping</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="data-structures.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+
+            if (!orderId) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const orders = StorageManager.getOrders();
+            const order = orders.find(o => o.id === orderId);
+
+            if (!order) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const orderInfo = document.getElementById('order-info');
+            const orderDate = new Date(order.orderDate);
+
+            orderInfo.innerHTML = `
+        <div class="order-info-row">
+          <span class="order-info-label">Order ID</span>
+          <span class="order-info-value order-id">${order.id}</span>
+        </div>
+        <div class="order-info-row">
+          <span class="order-info-label">Order Date</span>
+          <span class="order-info-value">${orderDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}</span>
+        </div>
+        <div class="order-info-row">
+          <span class="order-info-label">Total Amount</span>
+          <span class="order-info-value">$${order.total.toFixed(2)}</span>
+        </div>
+        <div class="order-info-row">
+          <span class="order-info-label">Items</span>
+          <span class="order-info-value">${order.items.length} item(s)</span>
+        </div>
+        ${order.shippingAddress ? `
+          <div class="order-info-row">
+            <span class="order-info-label">Shipping To</span>
+            <span class="order-info-value">${order.shippingAddress.name}</span>
+          </div>
+        ` : ''}
+      `;
+        });
+    </script>
+</body>
+
+</html>

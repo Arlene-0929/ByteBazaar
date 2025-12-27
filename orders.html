@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<link rel="icon" type="image/png" href="BB logo.png">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Track your orders" />
+    <title>My Orders - ByteBazaar</title>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="components.css" />
+</head>
+
+<body class="bg-neutral text-neutral-foreground font-sans antialiased">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-neutral/95 backdrop-blur-sm border-b border-gray-200">
+        <nav class="container mx-auto px-8 lg:px-16">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <a href="index.html"
+                    class="text-2xl font-heading font-bold text-navbar-text hover:text-primary transition-colors duration-200">
+                    ByteBazaar
+                </a>
+                <div class="flex items-center space-x-6">
+                    <a href="index.html"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200">Home</a>
+
+                    <!-- User Icon & Dropdown -->
+                    <div id="user-dropdown-container" class="hidden account-btn-container">
+                        <button id="user-icon-btn" aria-label="User menu"
+                            class="text-navbar-text hover:text-primary transition-colors duration-200 p-2">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </button>
+                        <div id="user-dropdown-menu"></div>
+                    </div>
+
+                    <button id="cart-toggle"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 p-2 relative">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span id="cart-count"
+                            class="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Shopping Cart Panel -->
+    <div id="cart-panel"
+        class="fixed top-0 right-0 h-full w-full md:w-96 bg-neutral shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-heading font-bold text-charcoal">Shopping Cart</h2>
+                <button id="cart-close" class="text-charcoal hover:text-primary transition-colors duration-200 p-2">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6">
+                <p class="text-gray-500 text-center py-8">Your cart is empty</p>
+            </div>
+            <div class="border-t border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-lg font-bold text-charcoal">Total:</span>
+                    <span id="cart-total" class="text-2xl font-heading font-bold text-primary">₱0.00</span>
+                </div>
+                <button id="checkout-btn"
+                    class="w-full bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-colors duration-200 py-4 px-6 rounded font-normal text-base">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cart-overlay" class="hidden fixed inset-0 bg-charcoal/40 z-40"></div>
+
+    <!-- Main Content -->
+    <main class="py-16 bg-gray-50 min-h-screen">
+        <div class="container mx-auto px-8 lg:px-16">
+            <div class="flex items-center justify-between mb-12">
+                <h1 class="text-4xl font-heading font-bold text-charcoal">My Orders</h1>
+                <button id="simulate-progress-btn"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors">
+                    Simulate Progress (Demo)
+                </button>
+            </div>
+            <div id="orders-container"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-gray-300 py-8">
+        <div class="container mx-auto px-8 lg:px-16 text-center">
+            <p>© 2024 ByteBazaar. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <link rel="stylesheet" href="auth.css">
+    <script src="data-structures.js"></script>
+    <script src="auth.js"></script>
+    <script src="auth-modal.js"></script>
+    <script src="account-panel.js"></script>
+    <script src="variant-modal.js"></script>
+    <script src="cart-manager.js"></script>
+    <script src="orders.js"></script>
+    <script src="favorites.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is logged in
+            setTimeout(() => {
+                if (!window.authManager || !window.authManager.isLoggedIn()) {
+                    alert('Please login to view orders');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // Update orders page after initialization
+                if (window.ordersManager) {
+                    window.ordersManager.updateOrdersPage();
+                }
+            }, 200);
+
+            // Simulate progress button
+            const simulateBtn = document.getElementById('simulate-progress-btn');
+            if (simulateBtn) {
+                simulateBtn.addEventListener('click', () => {
+                    const orders = StorageManager.getOrders();
+                    if (orders.length > 0 && orders[0].status !== 'cancelled' && orders[0].status !== 'delivered') {
+                        if (window.ordersManager) {
+                            window.ordersManager.simulateOrderProgress(orders[0].id);
+                        }
+                    } else {
+                        alert('No active orders to progress');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

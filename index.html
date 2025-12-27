@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<link rel="icon" type="image/png" href="BB logo.png">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="ByteBazaar - Your destination for cutting-edge gadgets, electronics, and smart devices" />
+    <title>ByteBazaar - Premium Gadgets &amp; Electronics Store</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Poppins:wght@600;700&display=swap');
+
+        html,
+        body {
+            color: hsl(210, 10%, 15%);
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="components.css" />
+</head>
+
+<body class="bg-neutral text-neutral-foreground font-sans antialiased">
+    <!-- Header / Navigation -->
+    <header id="header"
+        class="fixed top-2 sm:top-8 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[90%] max-w-7xl bg-gray-800/80 backdrop-blur-md rounded-full px-4 sm:px-6 py-2 sm:py-3 border border-gray-700 shadow-xl transition-all duration-300">
+        <nav class="container mx-auto px-4 sm:px-8 lg:px-16" aria-label="Main navigation">
+            <div class="flex items-center justify-between h-12 sm:h-16 lg:h-20">
+                <!-- Logo -->
+                <a href="#hero"
+                    class="text-xl sm:text-2xl font-heading font-bold text-navbar-text hover:text-primary transition-colors duration-200">
+                    ByteBazaar
+                </a>
+
+                <!-- Desktop Navigation (center) -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#smartphones"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 py-2 px-3">Smartphones</a>
+                    <a href="#laptops"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 py-2 px-3">Laptops</a>
+                    <a href="#Wearables"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 py-2 px-3">Wearables</a>
+                </div>
+
+                <!-- Right Icons -->
+                <div class="flex items-center space-x-3 sm:space-x-6">
+                    <button id="nav-search-btn" aria-label="Search"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 p-2">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Auth Buttons (shown when NOT logged in) -->
+                    <div id="auth-buttons" class="hidden items-center space-x-3">
+                        <button id="login-modal-btn"
+                            class="text-navbar-text hover:text-primary transition-colors duration-200 px-4 py-2 font-semibold">
+                            Login
+                        </button>
+                        <button id="signup-modal-btn"
+                            class="bg-primary text-white hover:bg-[hsl(10,60%,33%)] transition-colors duration-200 px-4 py-2 rounded font-semibold">
+                            Sign Up
+                        </button>
+                    </div>
+
+                    <!-- User Icon & Dropdown (shown when logged in) -->
+                    <div id="user-dropdown-container" class="hidden account-btn-container">
+                        <button id="user-icon-btn" aria-label="User menu"
+                            class="text-navbar-text hover:text-primary transition-colors duration-200 p-2">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </button>
+                        <div id="user-dropdown-menu"></div>
+                    </div>
+
+                    <button id="cart-toggle" aria-label="Shopping cart"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 p-2 relative">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span id="cart-count"
+                            class="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+
+                    <div class="mobile-menu-wrapper relative md:hidden">
+                        <button id="mobile-menu-toggle" aria-label="Toggle mobile menu"
+                            class="text-navbar-text hover:text-primary transition-colors duration-200 p-2">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                            </svg>
+                        </button>
+
+                        <!-- Mobile Menu -->
+                        <div id="mobile-menu"
+                            class="bg-white rounded-2xl mt-2 py-4 px-4 space-y-2 absolute top-full right-0 w-48 shadow-lg border border-gray-200 z-1000">
+                            <a href="#smartphones"
+                                class="block text-gray-800 hover:text-primary transition-colors duration-200 py-2 px-4 rounded-full hover:bg-gray-100">Smartphones</a>
+                            <a href="#laptops"
+                                class="block text-gray-800 hover:text-primary transition-colors duration-200 py-2 px-4 rounded-full hover:bg-gray-100">Laptops</a>
+                            <a href="#Wearables"
+                                class="block text-gray-800 hover:text-primary transition-colors duration-200 py-2 px-4 rounded-full hover:bg-gray-100">Wearables</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Shopping Cart Panel -->
+    <div id="cart-panel"
+        class="fixed top-0 right-0 h-full w-full md:w-96 bg-neutral shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-heading font-bold text-charcoal">
+                    Shopping Cart
+                </h2>
+                <button id="cart-close" aria-label="Close cart"
+                    class="text-charcoal hover:text-primary transition-colors duration-200 p-2">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6">
+                <p class="text-gray-500 text-center py-8">Your cart is empty</p>
+            </div>
+            <div class="border-t border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-lg font-bold text-charcoal">Total:</span>
+                    <span id="cart-total" class="text-2xl font-heading font-bold text-primary">₱0.00</span>
+                </div>
+                <button id="checkout-btn"
+                    class="w-full bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-colors duration-200 py-4 px-6 rounded font-normal text-base">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div id="cart-overlay" class="hidden fixed inset-0 bg-charcoal/40 z-40"></div>
+
+    <!-- Hero Section -->
+    <section id="hero"
+        class="relative min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] flex items-center bg-gradient-1 overflow-hidden pt-20 sm:pt-24">
+        <div class="absolute inset-0">
+            <img id="hero-image" src="./banner/web banner2.png" alt="modern tech gadgets and devices"
+                class="w-full h-full object-cover opacity-80 transition-opacity duration-1000" loading="eager" />
+            <div class="absolute inset-0 bg-gradient-to-r from-neutral/95 via-neutral/70 to-transparent"></div>
+        </div>
+        <div class="container mx-auto px-4 sm:px-8 lg:px-16 relative z-10">
+            <div class="max-w-2xl py-12 sm:py-32">
+                <h1 id="hero-heading"
+                    class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-hero-text mb-4 sm:mb-6 opacity-0">
+                    Innovation at Your Fingertips.
+                </h1>
+                <p id="hero-subtext" class="text-base sm:text-lg md:text-xl text-charcoal mb-6 sm:mb-8 opacity-0">
+                    Discover the latest gadgets and electronics that power your digital lifestyle with cutting-edge
+                    technology.
+                </p>
+                <a href="#products" id="hero-cta"
+                    class="inline-block bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-colors duration-200 py-4 px-8 rounded font-normal text-base opacity-0">
+                    Shop Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Section -->
+    <section id="categories" class="py-16 sm:py-32 bg-black">
+        <div class="container mx-auto px-4 sm:px-8 lg:px-16">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-black text-center mb-8 sm:mb-16">
+                Featured Gadgets
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+                <!-- Smartphones Category -->
+                <a href="#smartphones" id="smartphones"
+                    class="group relative overflow-hidden rounded bg-white hover:shadow-lg transition-all duration-300 block">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="phone.png" alt="latest smartphones collection"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                        <span class="text-2xl font-heading font-bold text-white">Smartphones</span>
+                    </div>
+                </a>
+
+                <!-- Laptops Category -->
+                <a href="#laptops" id="laptops"
+                    class="group relative overflow-hidden rounded bg-white hover:shadow-lg transition-all duration-300 block">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="laptop.png" alt="modern laptops and computers"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                        <span class="text-2xl font-heading font-bold text-white">Laptops</span>
+                    </div>
+                </a>
+
+                <!-- Wearables Category -->
+                <a href="#Wearables" id="Wearables"
+                    class="group relative overflow-hidden rounded bg-white hover:shadow-lg transition-all duration-300 block">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="wearable.png" alt="tech accessories and gadgets"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                        <span class="text-2xl font-heading font-bold text-white">Wearables</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Listing Section -->
+    <section id="products" class="py-16 sm:py-32 bg-pexels-featured">
+        <div class="container mx-auto px-4 sm:px-8 lg:px-16">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-black text-center mb-8 sm:mb-16">
+                Featured Gadgets
+            </h2>
+
+            <!-- Filter Bar -->
+            <div class="mb-8 sm:mb-12 bg-white p-4 sm:p-6 rounded border border-gray-200">
+                <div class="grid grid-cols-1 gap-3 sm:gap-4">
+                    <input id="product-search" type="text" placeholder="Search gadgets..."
+                        class="px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary text-charcoal bg-white" />
+                    <div style="display:flex;gap:0;width:100%;flex-wrap:wrap">
+                        <select id="category-select"
+                            style="flex:1;border-top-right-radius:0;border-bottom-right-radius:0;border-right:none;min-width:120px"
+                            class="px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-primary text-charcoal bg-white text-sm sm:text-base">
+                            <option>All Categories</option>
+                            <option>Smartphones</option>
+                            <option>Laptops</option>
+                            <option>Tablets</option>
+                            <option>Wearables</option>
+                            <option>Audio</option>
+                            <option>Accessories</option>
+                        </select>
+                        <select id="price-select"
+                            style="flex:1;border-top-left-radius:0;border-bottom-left-radius:0;margin-left:0;min-width:120px"
+                            class="px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-r focus:outline-none focus:ring-2 focus:ring-primary text-charcoal bg-white text-sm sm:text-base">
+                            <option>Price Range</option>
+                            <option>Under ₱1,000</option>
+                            <option>₱1,000 - ₱5,000</option>
+                            <option>₱5,000 - ₱20,000</option>
+                            <option>₱20,000 - ₱50,000</option>
+                            <option>Over ₱50,000</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Smartphone 1: iPhone 14 Pro Max -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-1" data-category="Smartphones" data-price="57,000">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg ip14.png" alt="iPhone 14 Pro Max"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-1" data-product-name="iPhone 14 Pro Max"
+                            data-product-price="57,000" data-product-image="Products/ip14.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-1" data-product-name="iPhone 14 Pro Max"
+                            data-product-price="57,000" data-product-image="Products/ip14.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            iPhone 14 Pro Max
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱57,000</p>
+                    </div>
+                </div>
+
+                <!-- Smartphone 2: Samsung Galaxy S23 Ultra -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-2" data-category="Smartphones" data-price="50,000">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg galaxy ultra.png" alt="Samsung Galaxy S23 Ultra"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-2"
+                            data-product-name="Samsung Galaxy S23 Ultra" data-product-price="50,000"
+                            data-product-image="Products/SamsungGalaxyS23Ultra.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-2" data-product-name="Samsung Galaxy S23 Ultra"
+                            data-product-price="50,000" data-product-image="Products/SamsungGalaxyS23Ultra.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Samsung Galaxy S23 Ultra
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱50,000</p>
+                    </div>
+                </div>
+
+                <!-- Smartphone 3: Google Pixel 10 Pro -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-3" data-category="Smartphones" data-price="44,000">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Google Pixel 10 Pro.png" alt="Google Pixel 10 Pro"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-3" data-product-name="Google Pixel 10 Pro"
+                            data-product-price="44,000" data-product-image="Products/Google Pixel 10 Pro.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-3" data-product-name="Google Pixel 10 Pro"
+                            data-product-price="44,000" data-product-image="Products/Google Pixel 10 Pro.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Google Pixel 10 Pro
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱44,000</p>
+                    </div>
+                </div>
+
+                <!-- Smartphone 4:iPhone 17 Promax  -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-4" data-category="Smartphones" data-price="86,990">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg iPhone 17 Promax.png" alt="iPhone 17 Promax"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-4" data-product-name="iPhone 17 Promax"
+                            data-product-price="86,990" data-product-image="Products/ip17 promax.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-4" data-product-name="iPhone 17 Promax" data-product-price="86,990"
+                            data-product-image="Products/ip17 promax.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            iPhone 17 Promax
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱86,990</p>
+                    </div>
+                </div>
+
+                <!-- Smartphone 5: Galaxy Z Flip7 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-5" data-category="Smartphones" data-price="60,000">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Galaxy Z Flip7.png" alt="Galaxy Z Flip7"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-5" data-product-name="Galaxy Z Flip7"
+                            data-product-price="60,000" data-product-image="Products/Galaxy Z Flip7.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-5" data-product-name="Galaxy Z Flip7" data-product-price="60,000"
+                            data-product-image="Products/Galaxy Z Flip7.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Galaxy Z Flip7
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱60,000</p>
+                    </div>
+                </div>
+
+                <!-- Smartphone 6: Pixel 10 Pro Fold -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-6" data-category="Smartphones" data-price="95,000">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Pixel 10 Pro Fold.png" alt="Pixel 10 Pro Fold"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-6" data-product-name="Pixel 10 Pro Fold"
+                            data-product-price="95,000" data-product-image="Products/Pixel 10 Pro Fold.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-6" data-product-name="Pixel 10 Pro Fold"
+                            data-product-price="95,000" data-product-image="Products/Pixel 10 Pro Fold.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Pixel 10 Pro Fold
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱95,000</p>
+                    </div>
+                </div>
+
+                <!-- Smartphone 7: iPhone 16 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-7" data-category="Smartphones" data-price="57,990">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg iPhone 16.png" alt="iPhone 16"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-7" data-product-name="iPhone 16"
+                            data-product-price="57,990" data-product-image="Products/iPhone16.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-7" data-product-name="iPhone 16" data-product-price="57,990"
+                            data-product-image="Products/iPhone16.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            iPhone 16
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱57,990</p>
+                    </div>
+                </div>
+
+                <!-- Smartphone 8: Galaxy S25 Ultra -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-8" data-category="Smartphones" data-price="85,000">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Galaxy S25 Ultra.png" alt="Galaxy S25 Ultra"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-8" data-product-name="Galaxy S25 Ultra"
+                            data-product-price="85,000" data-product-image="Products/Galaxy S25 Ultra.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-8" data-product-name="Galaxy S25 Ultra" data-product-price="85,000"
+                            data-product-image="Products/Galaxy S25 Ultra.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Galaxy S25 Ultra
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱85,000</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 9 - Laptop -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-9" data-category="Laptops" data-price="159,000">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg ROG Zephyrus G14.png" alt="ROG Zephyrus G14"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-9" data-product-name="ROG Zephyrus G14"
+                            data-product-price="159,000" data-product-image="Products/ROG Zephyrus G14.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-9" data-product-name="ROG Zephyrus G14"
+                            data-product-price="159,000" data-product-image="Products/ROG Zephyrus G14.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            ROG Zephyrus G14
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱159,000</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 10 - Laptop -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-10" data-category="Laptops" data-price="99,990">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg MacBook Pro 16.png" alt="MacBook Pro"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-10" data-product-name="MacBook Pro 16"
+                            data-product-price="99,990" data-product-image="Products/MacBook Pro 16.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-10" data-product-name="MacBook Pro 16" data-product-price="99,990"
+                            data-product-image="Products/MacBook Pro 16.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            MacBook Pro 16
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱99,990</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 17 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-17" data-category="Audio" data-price="14,990">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Galaxy Buds3 Pro.png" alt="Galaxy Buds3 Pro"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-17" data-product-name="Galaxy Buds3 Pro"
+                            data-product-price="14,990" data-product-image="Products/Galaxy Buds3 Pro.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-17" data-product-name="Galaxy Buds3 Pro"
+                            data-product-price="14,990" data-product-image="Products/Galaxy Buds3 Pro.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Galaxy Buds3 Pro
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱14,990</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 18 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-18" data-category="Audio" data-price="32,990">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg AirPods Max.png" alt="smartwatch"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-18" data-product-name="AirPods Max"
+                            data-product-price="32,990" data-product-image="Products/AirPods Max.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-18" data-product-name="AirPods Max" data-product-price="32,990"
+                            data-product-image="Products/AirPods Max.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            AirPods Max
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱32,990</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 19 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-19" data-category="Wearables" data-price="15,990">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Apple Watch SE 3.png" alt="Apple Watch SE 3"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-19" data-product-name="Apple Watch SE 3"
+                            data-product-price="15,990" data-product-image="Products/Apple Watch SE 3.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-19" data-product-name="Apple Watch SE 3"
+                            data-product-price="15,990" data-product-image="Products/Apple Watch SE 3.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Apple Watch SE 3
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱15,990</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 20 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-20" data-category="Tablets" data-price="86,000">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Galaxy Tab S11 Ultra.png" alt="tablet device"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-20"
+                            data-product-name="Galaxy Tab S11 Ultra" data-product-price="86,000"
+                            data-product-image="Products/Galaxy Tab S11 Ultra.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-20" data-product-name="Galaxy Tab S11 Ultra"
+                            data-product-price="86,000" data-product-image="Products/Galaxy Tab S11 Ultra.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Galaxy Tab S11 Ultra
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱86,000</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 21 - Tablet -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-21" data-category="Tablets" data-price="24,990">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg iPad Air 11.png" alt="iPad Air"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-21" data-product-name="iPad Air 11"
+                            data-product-price="24,990" data-product-image="Products/ipad.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-21" data-product-name="iPad Air 11" data-product-price="24,990"
+                            data-product-image="Products/ipad.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            iPad Air 11
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱24,990</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 29 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-29" data-category="Accessories" data-price="1,690">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Galaxy SmartTag2.png" alt="Galaxy SmartTag2 "
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-29" data-product-name="Galaxy SmartTag2 "
+                            data-product-price="1,690" data-product-image="Products/Galaxy SmartTag2.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-29" data-product-name="Galaxy SmartTag2 "
+                            data-product-price="1,690" data-product-image="Products/Galaxy SmartTag2.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Galaxy SmartTag2
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱1,690</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 30 - Wearables -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-30" data-category="Wearables" data-price="3,490">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Galaxy Fit3.png" alt="Galaxy Fit3"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-30" data-product-name="Galaxy Fit3"
+                            data-product-price="3,490" data-product-image="Products/Galaxy fit3.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-30" data-product-name="Galaxy Fit3" data-product-price="3,490"
+                            data-product-image="Products/Galaxy fit3.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Galaxy Fit3
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱3,490</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 41 - Accessories -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-41" data-category="Accessories" data-price="4,490">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="Products/bg Magic Mouse.png" alt="Magic Mouse - White Multi-Touch Surface"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-41"
+                            data-product-name="Magic Mouse - White Multi-Touch Surface" data-product-price="4,490"
+                            data-product-image="Products/Magic Mouse - White Multi-Touch Surface.png">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-41" data-product-name="Magic Mouse - White Multi-Touch Surface"
+                            data-product-price="4,490"
+                            data-product-image="Products/Magic Mouse - White Multi-Touch Surface.png">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Magic Mouse - White Multi-Touch Surface
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">₱4,490</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust and Safety Section -->
+    <section id="deals" class="py-32 bg-tertiary">
+        <div class="container mx-auto px-8 lg:px-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-6">
+                        <svg width="32" height="32" fill="none" stroke="hsl(0, 0%, 100%)" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-heading font-bold text-tertiary-foreground mb-3">
+                        Free Shipping
+                    </h3>
+                    <p class="text-tertiary-foreground">
+                        Extended warranty on all electronics
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-6">
+                        <svg width="32" height="32" fill="none" stroke="hsl(0, 0%, 100%)" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-heading font-bold text-tertiary-foreground mb-3">
+                        Secure Payments
+                    </h3>
+                    <p class="text-tertiary-foreground">
+                        Your payment information is always protected
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-6">
+                        <svg width="32" height="32" fill="none" stroke="hsl(0, 0%, 100%)" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-heading font-bold text-tertiary-foreground mb-3">
+                        Warranty Protection
+                    </h3>
+                    <p class="text-tertiary-foreground">
+                        Extended warranty on all electronics
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-gray-300 py-16">
+        <div class="border-t border-gray-700 pt-8 text-center text-gray-500">
+            <p>© 2024 ByteBazaar. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <link rel="stylesheet" href="auth.css">
+    <script src="data-structures.js"></script>
+    <script src="auth.js"></script>
+    <script src="auth-modal.js"></script>
+    <script src="account-panel.js"></script>
+    <script src="variant-modal.js"></script>
+    <script src="cart-manager.js"></script>
+    <script src="favorites.js"></script>
+    <script src="orders.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero animations
+            gsap.to('#hero-heading', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.3,
+                ease: 'power3.out',
+            });
+
+            gsap.to('#hero-subtext', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.5,
+                ease: 'power3.out',
+            });
+
+            gsap.to('#hero-cta', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.7,
+                ease: 'power3.out',
+            });
+
+            // Section animations on scroll
+            gsap.utils.toArray('section').forEach((section, i) => {
+                if (section.id !== 'hero') {
+                    gsap.from(section, {
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'top 50%',
+                            toggleActions: 'play none none none',
+                        },
+                        opacity: 0,
+                        y: 50,
+                        duration: 1,
+                        ease: 'power3.out',
+                    });
+                }
+            });
+
+            // Mobile menu toggle - show on hover like profile icon
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuWrapper = document.querySelector('.mobile-menu-wrapper');
+
+            if (mobileMenuToggle && mobileMenu && mobileMenuWrapper) {
+                let hideTimer = null;
+
+                // Show menu on hover (desktop)
+                mobileMenuWrapper.addEventListener('pointerenter', () => {
+                    clearTimeout(hideTimer);
+                    mobileMenu.classList.add('mobile-menu-visible');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'true');
+                });
+
+                // Start hide timer on leave
+                mobileMenuWrapper.addEventListener('pointerleave', () => {
+                    hideTimer = setTimeout(() => {
+                        mobileMenu.classList.remove('mobile-menu-visible');
+                        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    }, 200);
+                });
+
+                // Click for touch devices
+                mobileMenuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isVisible = mobileMenu.classList.contains('mobile-menu-visible');
+                    if (isVisible) {
+                        mobileMenu.classList.remove('mobile-menu-visible');
+                        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    } else {
+                        clearTimeout(hideTimer);
+                        mobileMenu.classList.add('mobile-menu-visible');
+                        mobileMenuToggle.setAttribute('aria-expanded', 'true');
+                    }
+                });
+
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (!mobileMenuWrapper.contains(e.target)) {
+                        mobileMenu.classList.remove('mobile-menu-visible');
+                        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Close when link clicked
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('mobile-menu-visible');
+                        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
+            }
+
+            // Add to cart with variant selection - wait for variantModal to be initialized
+            setTimeout(() => {
+                document.querySelectorAll('.add-to-cart-quick').forEach((btn) => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const product = {
+                            id: e.currentTarget.dataset.productId,
+                            name: e.currentTarget.dataset.productName,
+                            price: e.currentTarget.dataset.productPrice,
+                            image: e.currentTarget.dataset.productImage
+                        };
+
+                        if (window.variantModal) {
+                            window.variantModal.open(product);
+                        }
+                    });
+                });
+            }, 100);
+
+            // Hero image rotation
+            const heroImages = [
+                './banner/web banner2.png',
+                './banner/web banner3.png',
+                './banner/web banner4.png'
+            ];
+
+            let currentImageIndex = 0;
+            const heroImage = document.getElementById('hero-image');
+
+            function rotateHeroImage() {
+                if (!heroImage) return;
+
+                // Fade out
+                gsap.to(heroImage, {
+                    opacity: 0.3,
+                    duration: 0.8,
+                    onComplete: () => {
+                        // Change image
+                        currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+                        heroImage.src = heroImages[currentImageIndex];
+
+                        // Fade back in
+                        gsap.to(heroImage, {
+                            opacity: 0.8,
+                            duration: 0.8
+                        });
+                    }
+                });
+            }
+
+            // Rotate hero image every 5 seconds
+            setInterval(rotateHeroImage, 5000);
+
+            // Sticky header opacity on scroll
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const header = document.getElementById('header');
+
+                if (header) {
+                    if (currentScroll > 100) {
+                        header.style.backgroundColor = 'hsla(30, 20%, 95%, 0.95)';
+                    } else {
+                        header.style.backgroundColor = 'hsla(30, 20%, 95%, 0.95)';
+                    }
+                }
+
+                lastScroll = currentScroll;
+            });
+        });
+    </script>
+
+    <script>
+        // Product grid filtering
+        (function () {
+            const searchInput = document.getElementById('product-search');
+            const categorySelect = document.getElementById('category-select');
+            const priceSelect = document.getElementById('price-select');
+            const productCards = Array.from(document.querySelectorAll('.product-card'));
+
+            function toNumber(price) {
+                if (price == null) return 0;
+                const num = String(price).replace(/[^0-9.]/g, '');
+                return Number(num) || 0;
+            }
+
+            function matchesPrice(price, rangeText) {
+                const p = toNumber(price);
+                if (!rangeText || rangeText === 'Price Range') return true;
+
+                const nums = Array.from(String(rangeText).matchAll(/(\d+[\d,\.]*)/g)).map(m => toNumber(m[0]));
+
+                if (/under/i.test(rangeText) && nums.length) return p < nums[0];
+                if (/over/i.test(rangeText) && nums.length) return p > nums[0];
+                if (nums.length === 2) return p >= nums[0] && p <= nums[1];
+
+                return true;
+            }
+
+            function applyFilters() {
+                const q = (searchInput && searchInput.value || '').trim().toLowerCase();
+                const category = (categorySelect && categorySelect.value) || 'All Categories';
+                const priceRange = (priceSelect && priceSelect.value) || 'Price Range';
+
+                productCards.forEach(card => {
+                    const nameEl = card.querySelector('h3');
+                    const name = nameEl ? nameEl.textContent.trim().toLowerCase() : '';
+                    const cat = (card.dataset.category || '').trim();
+                    const price = card.dataset.price || '';
+
+                    const matchesQuery = q === '' || name.includes(q);
+                    const matchesCategory = category === 'All Categories' || cat === category;
+                    const matchesPriceRange = matchesPrice(price, priceRange);
+
+                    if (matchesQuery && matchesCategory && matchesPriceRange) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            // debounce helper
+            function debounce(fn, wait) {
+                let t;
+                return function (...args) {
+                    clearTimeout(t);
+                    t = setTimeout(() => fn.apply(this, args), wait);
+                };
+            }
+
+            if (searchInput) searchInput.addEventListener('input', debounce(applyFilters, 150));
+            if (categorySelect) categorySelect.addEventListener('change', applyFilters);
+            if (priceSelect) priceSelect.addEventListener('change', applyFilters);
+
+            // initial apply
+            applyFilters();
+
+            // Nav search button: scroll to products and focus the product search input
+            const navSearchBtn = document.getElementById('nav-search-btn');
+            if (navSearchBtn) {
+                navSearchBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const productsSection = document.getElementById('products');
+                    const input = document.getElementById('product-search');
+                    if (productsSection) productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if (input) {
+                        // small delay so scroll can begin before focusing
+                        setTimeout(() => {
+                            input.focus();
+                            const prevBg = input.style.backgroundColor;
+                            input.style.backgroundColor = '#fff9db';
+                            setTimeout(() => input.style.backgroundColor = prevBg, 900);
+                        }, 300);
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

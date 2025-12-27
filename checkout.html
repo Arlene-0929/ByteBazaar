@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" type="image/png" href="BB logo.png">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - ByteBazaar</title>
+    <link rel="stylesheet" href="globals.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="checkout.css">
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-neutral/95 backdrop-blur-sm border-b border-gray-200">
+        <nav class="container mx-auto px-8 lg:px-16">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <a href="index.html"
+                    class="text-2xl font-heading font-bold text-navbar-text hover:text-primary transition-colors duration-200">
+                    ByteBazaar
+                </a>
+                <div class="flex items-center space-x-6">
+                    <a href="index.html"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200">Home</a>
+
+                    <!-- User Icon & Dropdown -->
+                    <div id="user-dropdown-container" class="hidden account-btn-container">
+                        <button id="user-icon-btn" aria-label="User menu"
+                            class="text-navbar-text hover:text-primary transition-colors duration-200 p-2">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </button>
+                        <div id="user-dropdown-menu"></div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="checkout-container">
+        <h1 class="text-4xl font-heading font-bold text-charcoal mb-2">Checkout</h1>
+        <p class="text-gray-600 mb-8">Complete your order by providing shipping details</p>
+
+        <div class="checkout-grid" id="checkout-content">
+            <!-- Checkout Form -->
+            <div class="checkout-main">
+                <h2 class="section-title">
+                    <svg class="section-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                        </path>
+                    </svg>
+                    Shipping Address
+                </h2>
+
+                <div class="address-actions">
+                    <button type="button" id="use-default-address" class="btn-secondary">
+                        Use Default Address
+                    </button>
+                    <button type="button" id="clear-form" class="btn-secondary">
+                        Clear Form
+                    </button>
+                </div>
+
+                <form id="checkout-form" class="checkout-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="checkout-name" class="form-label">
+                                Full Name <span class="required">*</span>
+                            </label>
+                            <input type="text" id="checkout-name" class="checkout-input" placeholder="Juan Dela Cruz"
+                                required data-field-name="name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="checkout-mobile" class="form-label">
+                                Mobile Number <span class="required">*</span>
+                            </label>
+                            <input type="tel" id="checkout-mobile" class="checkout-input" placeholder="09XX-XXX-XXXX"
+                                required data-field-name="mobile">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="checkout-street" class="form-label">
+                            House/Unit/Street <span class="required">*</span>
+                        </label>
+                        <input type="text" id="checkout-street" class="checkout-input"
+                            placeholder="123 Main Street, Unit 4B" required data-field-name="street">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="checkout-province" class="form-label">
+                                Province <span class="required">*</span>
+                            </label>
+                            <select id="checkout-province" class="checkout-input" required data-field-name="province">
+                                <option value="">Select Province</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="checkout-municipality" class="form-label">
+                                Municipality <span class="required">*</span>
+                            </label>
+                            <select id="checkout-municipality" class="checkout-input" required
+                                data-field-name="municipality">
+                                <option value="">Select Municipality</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="checkout-barangay" class="form-label">
+                                Barangay <span class="required">*</span>
+                            </label>
+                            <select id="checkout-barangay" class="checkout-input" required data-field-name="barangay">
+                                <option value="">Select Barangay</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="checkout-postal" class="form-label">
+                                Postal Code <span class="required">*</span>
+                            </label>
+                            <input type="text" id="checkout-postal" class="checkout-input" placeholder="1234" required
+                                maxlength="4" data-field-name="postal">
+                        </div>
+                    </div>
+
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="checkout-default">
+                        <div class="checkbox-label">
+                            Set as Default Address
+                            <div class="checkbox-description">Use this address for future orders</div>
+                        </div>
+                    </label>
+
+                    <button type="submit" class="checkout-submit">
+                        Place Order
+                    </button>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="checkout-sidebar">
+                <h3 class="order-summary-title">Order Summary</h3>
+
+                <div class="summary-items" id="summary-items">
+                    <!-- Items will be populated by JavaScript -->
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-row">
+                    <span class="summary-label">Subtotal</span>
+                    <span class="summary-value" id="summary-subtotal">$0.00</span>
+                </div>
+
+                <div class="summary-row">
+                    <span class="summary-label">Shipping</span>
+                    <span class="summary-value">FREE</span>
+                </div>
+
+                <div class="summary-total">
+                    <span class="summary-total-label">Total</span>
+                    <span class="summary-total-value" id="summary-total">$0.00</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <link rel="stylesheet" href="auth.css">
+    <script src="data-structures.js"></script>
+    <script src="auth.js"></script>
+    <script src="auth-modal.js"></script>
+    <script src="account-panel.js"></script>
+    <script src="checkout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check authentication
+            if (!window.authManager || !window.authManager.isLoggedIn()) {
+                return;
+            }
+
+            // Load cart and display summary
+            const cart = StorageManager.getCart();
+            const summaryItems = document.getElementById('summary-items');
+            const summarySubtotal = document.getElementById('summary-subtotal');
+            const summaryTotal = document.getElementById('summary-total');
+
+            if (cart.length === 0) {
+                document.getElementById('checkout-content').innerHTML = `
+          <div class="empty-cart-state" style="grid-column: 1 / -1;">
+            <svg class="empty-cart-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            <h2 class="empty-cart-title">Your Cart is Empty</h2>
+            <p class="empty-cart-description">Add some products to your cart before checking out</p>
+            <a href="index.html#products" class="empty-cart-action">Browse Products</a>
+          </div>
+        `;
+                return;
+            }
+
+            // Calculate total
+            let total = 0;
+
+            summaryItems.innerHTML = cart.map(item => {
+                const itemTotal = parseFloat(item.price) * item.quantity;
+                total += itemTotal;
+
+                return `
+          <div class="summary-item">
+            <img src="${item.image}" alt="${item.name}" class="summary-item-image">
+            <div class="summary-item-details">
+              <div class="summary-item-name">${item.name}</div>
+              <div class="summary-item-variant">
+                ${item.color ? `Color: ${item.color}` : ''}
+                ${item.size ? ` • Size: ${item.size}` : ''}
+                ${item.quantity > 1 ? ` • Qty: ${item.quantity}` : ''}
+              </div>
+              <div class="summary-item-price">$${itemTotal.toFixed(2)}</div>
+            </div>
+          </div>
+        `;
+            }).join('');
+
+            summarySubtotal.textContent = `$${total.toFixed(2)}`;
+            summaryTotal.textContent = `$${total.toFixed(2)}`;
+        });
+    </script>
+</body>
+
+</html>
